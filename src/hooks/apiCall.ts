@@ -16,6 +16,8 @@ export const useFetch = <T = any>({
     const [loading, setLoading] = useState(preFetch);
 
     const fetchCall = useCallback(()=> {
+        setLoading(true);
+        
         axios.get(url).then(res => {
                 
             setData(!!callback ? callback(res) : res.data);
