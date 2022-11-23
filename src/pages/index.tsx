@@ -1,9 +1,26 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useEffect } from 'react'
+import { useFetch } from '../hooks/apiCall'
 import styles from '../styles/Home.module.css'
 
+type DataType = {
+  name: string;
+}
+
 const Home: NextPage = () => {
+
+  const helloData = useFetch<string>({
+    url: '/api/hello',
+
+    callback: (res) => {
+      return res.data.name;
+    },
+  });
+
+  console.log(helloData.data); // John Doe
+
   return (
     <div className={styles.container}>
       <Head>
