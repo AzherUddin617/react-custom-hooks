@@ -25,11 +25,11 @@ export const useFetch = <T = any>({
         });
     }, [url, callback]);
 
-    useEffectOnce(()=> {
+    useEffect(() => {
         if (preFetch) {
             fetchCall();
         }
-    });
+    }, [preFetch, fetchCall]);
 
     return {
         data,
@@ -37,15 +37,3 @@ export const useFetch = <T = any>({
         fetch: fetchCall,
     }
 }
-
-export default function useEffectOnce(fn: () => void) {
-    const ref = useRef(false);
-    useEffect(() => {
-      if (ref.current) {
-        fn();
-      }
-      return () => {
-        ref.current = true;
-      };
-    }, [fn]);
-  }

@@ -11,15 +11,9 @@ type DataType = {
 
 const Home: NextPage = () => {
 
-  const helloData = useFetch<string>({
-    url: '/api/hello',
+  const { data, loading, fetch } = useFetch<DataType>({ url: '/api/hello' });
 
-    callback: (res) => {
-      return res.data.name;
-    },
-  });
-
-  console.log(helloData.data); // John Doe
+  console.log(data); // { name: 'John Doe' }
 
   return (
     <div className={styles.container}>
