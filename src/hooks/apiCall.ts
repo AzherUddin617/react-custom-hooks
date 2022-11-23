@@ -13,18 +13,29 @@ export const useFetch = <T = any>({
     preFetch = true,
 }: Props<T>) => {
     const [data, setData] = useState<T>();
+    const [error, setError] = useState<any>();
     const [loading, setLoading] = useState(preFetch);
 
-    const fetchCall = useCallback(()=> {
+    const fetchCall = useCallback(():Promise<AxiosResponse> => {
         setLoading(true);
-        
-        axios.get(url).then(res => {
-                
-            setData(!!callback ? callback(res) : res.data);
 
-        }).finally(()=> {
-            setLoading(false);
-        });
+        return new Promise(async (resolve, reject) => {
+            try {
+                const res = await axios.get(url);
+
+                setData(!!callback ? callback(res) : res.data);
+
+                resolve(res);
+            }
+            catch (error) {
+
+                setError(error);
+                setLoading(false);
+
+                reject(error);
+            }
+        })
+        
     }, [url, callback]);
 
     useEffect(() => {
@@ -36,6 +47,7 @@ export const useFetch = <T = any>({
     return {
         data,
         loading,
+        error,
         fetch: fetchCall,
     }
 }
